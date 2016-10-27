@@ -1,0 +1,38 @@
+body {
+  background-color: lightblue;
+  font-family: sans-serif;
+  padding-top: 50px;
+}
+input {
+  width: 200px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px gray solid;
+  font-size: 20px;
+  padding: 5px;
+}
+button {
+  width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px gray solid;
+  font-size: 20px;
+}
+.no-focus {
+  outline: 0;
+}
+#main {
+  text-align: center;
+}
+#search-input {
+  width: 284px;
+}
+#todo-list {
+  padding-top: 20px;
+}
+#todo-list ul {
+  padding: 0;
+  list-style-type: none;
+  width: 300px;
+  margin: auto;
+}
