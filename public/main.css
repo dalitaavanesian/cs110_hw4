@@ -49,3 +49,6 @@ button {
 #todo-list ul li span {
   color: navy;
 }
+.hidden {
+  display: none !important;
+}
