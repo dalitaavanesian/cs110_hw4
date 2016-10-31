@@ -20,7 +20,7 @@ $(function($) {
   });
 
   function appendTodo(todo) {
-    $('#todo-list ul').append('<li><i class="check-button fa fa-check-circle-o ' + (todo.checked ? '' : 'hidden') + '"></i><i class="check-button fa fa-circle-o ' + (todo.checked ? 'hidden' : '') + '"></i><i id="' + todo.id + '" class="delete-button fa fa-trash-o"></i><span>' + todo.title + '</span></li>');
+    $('#todo-list ul').append('<li id="' + todo.id + '"><i class="check-button fa fa-check-circle-o ' + (todo.checked ? '' : 'hidden') + '"></i><i class="check-button fa fa-circle-o ' + (todo.checked ? 'hidden' : '') + '"></i><i class="delete-button fa fa-trash-o"></i><span>' + todo.title + '</span></li>');
   }
 
   function addCheckClickAction() {
@@ -34,13 +34,13 @@ $(function($) {
   function addDeleteAction() {
     $('.delete-button').unbind('click');
     $('.delete-button').click(function() {
-      var id = $(this).attr('id');
+      var id = $(this).parent().attr('id');
       $.ajax({
         url: '/deletetodo',
         type: 'DELETE',
         data: id,
         success: function() {
-          $('#' + id).parent().remove();
+          $('#' + id).remove();
         }
       });
     });
