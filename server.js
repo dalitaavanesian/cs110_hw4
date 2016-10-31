@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 
-const todos = [{title: 'todo1', checked: false}, {title: 'todo2', checked: true}, {title: 'todo3', checked: false}];
+const todos = [];
 
 http.createServer(function(req, res) {
 
@@ -32,6 +32,42 @@ http.createServer(function(req, res) {
           res.writeHeader(200, {'Content-Type': 'application/json'});
           res.end(JSON.stringify(todos));
         }
+      } else if(req.method === 'POST') {
+        if(path === '/addtodo') {
+          var body = "";
+          req.on('data', function(chunk) {
+            body += chunk;
+          });
+          req.on('end', function() {
+            var todo = {
+              id: getRandomInt(10, 100000000),
+              title: body,
+              checked: false
+            };
+
+            todos.push(todo);
+            res.writeHeader(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(todo));
+          })
+        }
+      } else if(req.method === 'DELETE') {
+        if(path === '/deletetodo') {
+          var body = "";
+          req.on('data', function(chunk) {
+            body += chunk;
+          });
+          req.on('end', function() {
+            for(var i = 0; i < todos.length; i++) {
+              var todo = todos[i];
+              if(todo.id == body) {
+                todos.splice(i, 1);
+                break;
+              }
+            }
+          })
+          res.statusCode = 200;
+          res.end();
+        }
       }
     }
   });
@@ -39,3 +75,9 @@ http.createServer(function(req, res) {
 }).listen(3001, function() {
   console.log('server is running.');
 });
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
