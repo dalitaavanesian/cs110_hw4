@@ -24,6 +24,7 @@ $(function($) {
   }
 
   function addCheckClickAction() {
+    $('.check-button').unbind('click');
     $('.check-button').click(function() {
       $(this).toggleClass('hidden');
       $(this).siblings('.check-button').toggleClass('hidden');
@@ -31,6 +32,7 @@ $(function($) {
   }
 
   function addDeleteAction() {
+    $('.delete-button').unbind('click');
     $('.delete-button').click(function() {
       var id = $(this).attr('id');
       $.ajax({
