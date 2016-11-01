@@ -68,6 +68,25 @@ http.createServer(function(req, res) {
           res.statusCode = 200;
           res.end();
         }
+      } else if(req.method === 'PUT') {
+        if(path === '/modifytodo') {
+          var bodyString = "";
+          req.on('data', function(chunk) {
+            bodyString += chunk;
+          });
+          req.on('end', function() {
+            const body = JSON.parse(bodyString);
+            for(var i = 0; i < todos.length; i++) {
+              var todo = todos[i];
+              if(todo.id == body.id) {
+                todo.checked = body.checked;
+                break;
+              }
+            }
+          })
+          res.statusCode = 200;
+          res.end();
+        }
       }
     }
   });

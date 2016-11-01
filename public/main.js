@@ -20,14 +20,24 @@ $(function($) {
   });
 
   function appendTodo(todo) {
-    $('#todo-list ul').append('<li id="' + todo.id + '"><i class="check-button fa fa-check-circle-o ' + (todo.checked ? '' : 'hidden') + '"></i><i class="check-button fa fa-circle-o ' + (todo.checked ? 'hidden' : '') + '"></i><i class="delete-button fa fa-trash-o"></i><span>' + todo.title + '</span></li>');
+    $('#todo-list ul').append('<li id="' + todo.id + '"><i class="check-button checked fa fa-check-circle-o ' + (todo.checked ? '' : 'hidden') + '"></i><i class="check-button fa fa-circle-o ' + (todo.checked ? 'hidden' : '') + '"></i><i class="delete-button fa fa-trash-o"></i><span>' + todo.title + '</span></li>');
   }
 
   function addCheckClickAction() {
     $('.check-button').unbind('click');
     $('.check-button').click(function() {
-      $(this).toggleClass('hidden');
-      $(this).siblings('.check-button').toggleClass('hidden');
+      var id = $(this).parent().attr('id');
+      var checked = $(this).hasClass('checked') ? false : true;
+      var button = $(this);
+      $.ajax({
+        url: '/modifytodo',
+        type: 'PUT',
+        data: JSON.stringify({id: id, checked: checked}),
+        success: function() {
+          button.toggleClass('hidden');
+          button.siblings('.check-button').toggleClass('hidden');
+        }
+      });
     });
   }
 
