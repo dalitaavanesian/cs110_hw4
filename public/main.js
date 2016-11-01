@@ -10,14 +10,26 @@ $(function($) {
     });
   });
 
+  $('#search-button').click(function() {
+    var searchText = $('#search-input').val();
+    $.get('/searchtodos?text=' + searchText, function(result) {
+      $('#todo-list ul').children().remove();
+      addTodosToPage(result);
+    });
+  });
+
   $.get('/gettodos', function(result) {
+    addTodosToPage(result);
+  });
+
+  function addTodosToPage(result) {
     for(var i = 0; i < result.length; i++) {
       var todo = result[i];
       appendTodo(todo);
     }
     addCheckClickAction();
     addDeleteAction();
-  });
+  }
 
   function appendTodo(todo) {
     $('#todo-list ul').append('<li id="' + todo.id + '"><i class="check-button checked fa fa-check-circle-o ' + (todo.checked ? '' : 'hidden') + '"></i><i class="check-button fa fa-circle-o ' + (todo.checked ? 'hidden' : '') + '"></i><i class="delete-button fa fa-trash-o"></i><span>' + todo.title + '</span></li>');

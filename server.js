@@ -1,4 +1,5 @@
 const http = require('http');
+const url = require('url');
 const fs = require('fs');
 
 const todos = [];
@@ -31,6 +32,20 @@ http.createServer(function(req, res) {
         if(path === '/gettodos') {
           res.writeHeader(200, {'Content-Type': 'application/json'});
           res.end(JSON.stringify(todos));
+        } else if(path.indexOf('/searchtodos') > -1) {
+          const parsedUrl = url.parse(req.url, true);
+          const queryAsObject = parsedUrl.query;
+          const text = queryAsObject.text;
+
+          var searchResult = [];
+          for(var i = 0; i < todos.length; i++) {
+            var todo = todos[i];
+            if(todo.title.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+              searchResult.push(todo);
+            }
+          }
+          res.writeHeader(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify(searchResult));
         }
       } else if(req.method === 'POST') {
         if(path === '/addtodo') {
