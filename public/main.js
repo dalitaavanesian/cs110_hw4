@@ -39,7 +39,7 @@ $(function($) {
     $('.check-button').unbind('click');
     $('.check-button').click(function() {
       var id = $(this).parent().attr('id');
-      var checked = $(this).hasClass('checked') ? false : true;
+      var checked = !$(this).hasClass('checked');
       var button = $(this);
       $.ajax({
         url: '/modifytodo',
