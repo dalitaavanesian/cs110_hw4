@@ -20,8 +20,7 @@ http.createServer(function(req, res) {
       fs.readFile(filePath, function(err, data) {
         if(err) {
           console.log(err.message);
-          res.statusCode = 500;
-          res.end('There was an error');
+          sendError(res, 500, 'There was a server error!');
         } else {
           res.statusCode = 200;
           res.end(data);
@@ -46,6 +45,8 @@ http.createServer(function(req, res) {
           }
           res.writeHeader(200, {'Content-Type': 'application/json'});
           res.end(JSON.stringify(searchResult));
+        } else {
+          sendError(res, 404, "Page not found!");
         }
       } else if(req.method === 'POST') {
         if(path === '/addtodo') {
@@ -64,6 +65,8 @@ http.createServer(function(req, res) {
             res.writeHeader(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(todo));
           })
+        } else {
+          sendError(res, 404, "Page not found!");
         }
       } else if(req.method === 'DELETE') {
         if(path === '/deletetodo') {
@@ -82,6 +85,8 @@ http.createServer(function(req, res) {
           })
           res.statusCode = 200;
           res.end();
+        } else {
+          sendError(res, 404, "Page not found!");
         }
       } else if(req.method === 'PUT') {
         if(path === '/modifytodo') {
@@ -101,7 +106,11 @@ http.createServer(function(req, res) {
           })
           res.statusCode = 200;
           res.end();
+        } else {
+          sendError(res, 404, "Page not found!");
         }
+      } else {
+        sendError(res, 404, "Unknown method!");
       }
     }
   });
@@ -114,4 +123,9 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function sendError(res, errorCode, message) {
+  res.writeHead(errorCode, {'Content-Type' : 'text/plain'});
+  res.end(message);
 }
